@@ -6,6 +6,6 @@ namespace PosKu.Models
     {
         public string Description { get; set; }
         public virtual ICollection<User>? Users { get; set; } = [];
-        public virtual ICollection<Menu> Menus { get; set; } = [];
+        public virtual ICollection<RoleMenu> RoleMenus { get; set; } = [];
     }
 }

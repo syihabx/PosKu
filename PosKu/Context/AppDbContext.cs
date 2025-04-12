@@ -10,10 +10,10 @@ namespace PosKu.Context
         {
         }
 
-        // DbSets for entities
         public DbSet<Menu> Menus { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<RoleMenu> RoleMenus { get; set; } = null!; // Add DbSet for RoleMenu
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,15 +54,21 @@ namespace PosKu.Context
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
 
-            // Relationship: Role and Menu with many-to-many relationship
-            modelBuilder.Entity<Menu>()
-                .HasMany(m => m.Roles)
-                .WithMany(r => r.Menus)
-                .UsingEntity<Dictionary<string, object>>(
-                    "RoleMenu",
-                    j => j.HasOne<Role>().WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Restrict),
-                    j => j.HasOne<Menu>().WithMany().HasForeignKey("MenuId").OnDelete(DeleteBehavior.Restrict)
-                );
+            // Relationship: Role and Menu with many-to-many relationship using RoleMenu
+            modelBuilder.Entity<RoleMenu>()
+                .HasKey(rm => new { rm.RoleId, rm.MenuId });  // Defining composite key
+
+            modelBuilder.Entity<RoleMenu>()
+                .HasOne(rm => rm.Role)
+                .WithMany(r => r.RoleMenus)  // This links Role to RoleMenu
+                .HasForeignKey(rm => rm.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
+
+            modelBuilder.Entity<RoleMenu>()
+                .HasOne(rm => rm.Menu)
+                .WithMany(m => m.RoleMenus)  // This links Menu to RoleMenu
+                .HasForeignKey(rm => rm.MenuId)
+                .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
         }
-    }
+    }    
 }
