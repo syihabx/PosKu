@@ -1,0 +1,40 @@
+﻿@model PosKu.Models.Role
+
+@{
+    ViewData["Title"] = "Edit Role";
+    var menus = ViewBag.Menus as List<PosKu.Models.Menu>;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Role Name:</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">Description:</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Menus">Assign Menus:</label>
+        <select name="selectedMenus" multiple="multiple" class="form-control">
+            @foreach (var menu in menus)
+            {
+                var isSelected = Model.RoleMenus.Any(rm => rm.MenuId == menu.Id) ? "selected" : "";
+                <option value="@menu.Id" selected="@isSelected">@menu.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

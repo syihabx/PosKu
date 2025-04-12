@@ -1,0 +1,20 @@
+﻿@model PosKu.Models.Role
+
+@{
+    ViewData["Title"] = "Delete Role";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Are you sure you want to delete this role?</h3>
+
+<div>
+    <h4>Role Name: @Model.Name</h4>
+    <h4>Description: @Model.Description</h4>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
