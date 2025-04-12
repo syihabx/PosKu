@@ -17,5 +17,22 @@ namespace PosKu.Controllers
                 .ThenInclude(m=>m.Menu).ToListAsync();
             return View(roles);
         }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var role = await _context.Roles
+                .Include(r => r.RoleMenus)
+                .ThenInclude(m => m.Menu)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            return View(role);
+        }
     }
 }

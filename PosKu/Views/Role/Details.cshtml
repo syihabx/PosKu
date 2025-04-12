@@ -1,0 +1,30 @@
+﻿@model PosKu.Models.Role
+
+@{
+    ViewData["Title"] = "Role Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="form-group">
+    <label>Role Name :</label>
+    <p class="form-control-static">@Model.Name</p>
+</div>
+
+<div class="form-group">
+    <label>Role Description :</label>
+    <p class="form-control-static">@Model.Description</p>
+    </div>
+
+<div class="form-group">
+    <label>Assign Menus :</label>
+    <p class="form-control-static">@Model.Name</p>
+    <ul>
+        @foreach (var menu in Model.RoleMenus.Select(FormInputRenderMode=>FormInputRenderMode.Menu))
+        {
+            <li>@menu.Name</li>
+        }
+        </ul>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>
